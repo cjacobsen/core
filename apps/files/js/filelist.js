@@ -1085,12 +1085,21 @@
 			if (this._reloadCall) {
 				this._reloadCall.abort();
 			}
+
+			var redirect = function() {
+				OC.redirect(OC.generateUrl('apps/files'));
+			};
+
 			this._reloadCall = $.ajax({
 				url: this.getAjaxUrl('list'),
 				data: {
 					dir : this.getCurrentDirectory(),
 					sort: this._sort,
-					sortdirection: this._sortDirection
+					sortdirection: this._sortDirection,
+					statusCode: {
+						302: redirect,
+						307: redirect
+					}
 				}
 			});
 			var callBack = this.reloadCallback.bind(this);
